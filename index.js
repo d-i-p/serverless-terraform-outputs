@@ -28,8 +28,13 @@ module.exports = class ServerlessTerraformOpts {
         for (let [k, v] of Object.entries(outputs)) {
             keyValues[k] = v.value
         }
+        
+        const value = keyValues[name]
+        if (value == null) {
+            throw new this.serverless.classes.Error(`terraform-serverless-outputs: Output <${name}> not found`)
+        }
 
-        return keyValues[name]
+        return value
     }
 
     async cachedTerraformOutput() {
